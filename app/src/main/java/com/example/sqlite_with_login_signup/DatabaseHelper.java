@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase MyDb, int i, int i1) {
           MyDb.execSQL("drop Table if exists users");
     }
-    public  boolean insertUsers(String email, String password){
+    public  Boolean insertUsers(String email, String password){
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put("email",email);
@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public  boolean checkEmailPassword(String email, String password){
+    public  Boolean checkEmailPassword(String email, String password){
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery("Select * from users where email=? and password=?",
                 new String[]{email,password});
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 }
 
-    public  boolean checkEmail(String email) {
+    public  Boolean checkEmail(String email) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("Select * from users where email=? ", new String[]{email});
 

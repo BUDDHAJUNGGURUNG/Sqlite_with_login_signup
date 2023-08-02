@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/img"
-  tools:context=".Signup">
+    android:background="@drawable/img_3"
+    tools:context=".Signup">
 
 
 

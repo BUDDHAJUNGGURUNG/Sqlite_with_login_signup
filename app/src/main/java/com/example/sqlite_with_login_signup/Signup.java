@@ -2,7 +2,7 @@ package com.example.sqlite_with_login_signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,56 +11,60 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sqlite_with_login_signup.databinding.ActivitySignupBinding;
+
 public class Signup extends AppCompatActivity {
-
-    EditText edit_email, edit_password, edit_confirm_password;
-    Button btn_signup;
-
-    TextView txt_login;
+    ActivitySignupBinding binding;
     DatabaseHelper databaseHelper;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        binding=ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        init();
-        databaseHelper= new DatabaseHelper(this);
+        databaseHelper=new DatabaseHelper(this);
 
-        btn_signup.setOnClickListener(new View.OnClickListener() {
+        binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String email= edit_email.getText().toString().trim();
-                String password= edit_password.getText().toString().trim();
-                String  confirm_password= edit_confirm_password.getText().toString().trim();
-                boolean b= databaseHelper.insertUsers(email,password);
+            public void onClick(View v) {
+                String email=binding.signupEmail.getText().toString().trim();
+                String password=binding.signupPassword.getText().toString().trim();
+                String cpassword=binding.signupConfirmPassword.getText().toString().trim();
 
-                if (b){
-                    Toast.makeText(Signup.this, "Data Inserted", Toast.LENGTH_SHORT).show();
-                    Intent i= new Intent(Signup.this,MainActivity.class);
-                    startActivity(i);
+                if (email.equals("") || password.equals("")|| cpassword.equals(""))
+                    Toast.makeText(Signup.this,"All field are mandatory",Toast.LENGTH_SHORT).show();
+                else{
+                    if (password.equals(cpassword)){
+                        Boolean checkEmail=databaseHelper.checkEmail(email);
+                        if (checkEmail==false){
+                            Boolean insert=databaseHelper.insertUsers(email,password);
+                            if (insert==true){
+                                Toast.makeText(Signup.this,"Signup Successful",Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(getApplicationContext(), Login.class);
+                                startActivity(intent);
 
-                }else {
-                    Toast.makeText(Signup.this, "Data Not Inserted", Toast.LENGTH_SHORT).show();
-
+                            }else {
+                                Toast.makeText(Signup.this,"Signup Failed",Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(Signup.this,"Users already exists please Login",Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(Signup.this,"Invalid Password",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-        txt_login.setOnClickListener(new View.OnClickListener() {
+
+        binding.loginRedirectText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent login_i=new Intent(Signup.this,Login.class);
-                startActivity(login_i);
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),Login.class);
+                startActivity(intent);
             }
         });
 
-    }
-
-    public  void  init  (){
-
-        edit_email=findViewById(R.id.signup_email);
-        edit_password=findViewById(R.id.signup_password);
-        edit_confirm_password=findViewById(R.id.signup_confirm_password);
-        btn_signup=findViewById(R.id.btn_signup);
-        txt_login=findViewById(R.id.loginRedirectText);
     }
 }

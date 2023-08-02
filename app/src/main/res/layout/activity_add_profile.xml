@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:gravity="center"
+    tools:context=".Add_Profile">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/img_1"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
+
+    <EditText
+        android:id="@+id/profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Enter Name"
+        android:textColorHint="@color/black"
+        android:inputType="text"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/profile_address"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Enter Address"
+        android:textColorHint="@color/black"
+        android:inputType="text"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/profile_email"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Enter Email"
+        android:textColorHint="@color/black"
+        android:inputType="text"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/profile_phone"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Enter Contact Number"
+        android:textColorHint="@color/black"
+        android:inputType="number"
+        android:layout_marginTop="10dp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/add_profile"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:text="Add Profile"-->
+<!--        android:textSize="22sp"-->
+<!--        android:layout_marginTop="10dp"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/view_profile"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:text="View Profile"-->
+<!--        android:textSize="22sp"-->
+<!--        android:layout_marginTop="10dp"/>-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save_button"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/baseline_person_add_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+</LinearLayout>
