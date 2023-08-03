@@ -1,16 +1,20 @@
 package com.example.sqlite_with_login_signup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 
@@ -77,10 +81,19 @@ public class Add_Profile extends AppCompatActivity {
     }
 
     private void pickFromGallery() {
-
+        Intent GalleryIntent=new Intent(Intent.ACTION_PICK);
+        GalleryIntent.setType("image/*");
+        startActivityForResult(getIntent(),IMAGE_PICK_GALLERY_CODE);
     }
 
     private void pickFromCamera() {
+        ContentValues values=new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE,"Image Title");
+        values.put(MediaStore.Images.Media.DESCRIPTION,"Image Description");
+        imageUri=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
     }
 
     private  boolean checkStoragePermission(){
@@ -118,23 +131,40 @@ public class Add_Profile extends AppCompatActivity {
 
         switch (requestCode) {
             case CAMERA_REQUEST_CODE:{
-                boolean cameraAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                boolean storageAccepted=grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                if (cameraAccepted && storageAccepted){
-                    pickFromCamera();
-                }else {
-                    Toast.makeText(this, "Camera and Gallery permission are required", Toast.LENGTH_SHORT).show();
+                if (grantResults.length>0){
+
+                    boolean cameraAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
+                    boolean storageAccepted=grantResults[1]==PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && storageAccepted){
+                        pickFromCamera();
+                    }else {
+                        Toast.makeText(this, "Camera and Gallery permission are required", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }break;
             case STORAGE_REQUEST_CODE:{
-                boolean storageAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                if (storageAccepted){
-                    pickFromGallery();
-                }else {
-                    Toast.makeText(this, "Storage Permission Required", Toast.LENGTH_SHORT).show();
+                if (grantResults.length>0){
+
+                    boolean storageAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
+                    if (storageAccepted){
+                        pickFromGallery();
+                    }else {
+                        Toast.makeText(this, "Storage Permission Required", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }break;
         }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode==RESULT_OK){
+            if (requestCode==IMAGE_PICK_GALLERY_CODE){
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
